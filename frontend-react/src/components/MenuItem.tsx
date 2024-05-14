@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/button";
 const MenuItem = ({
   item,
 }: {
-  item: { brand: string; year: number; engine: number; variant: string };
+  item: { brand: string; year: number; car_engine: number; variant: string };
 }) => {
   return (
     <li className="w-full flex flex-col md:flex-row md:items-center border  p-4 rounded-lg bg-slate-200  mb-4">
@@ -14,7 +14,7 @@ const MenuItem = ({
         </div>
         <div className="md:flex md:flex-col md:gap-2 px-2 mt-2 md:mt-0 space-x-2 md:space-x-0">
           <span className="text-lg font-medium">{item.variant}</span>
-          <span>Engine: {item.engine}</span>
+          <span>Engine: {item.car_engine}</span>
         </div>
       </div>
 

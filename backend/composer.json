@@ -1,15 +1,17 @@
 {
-    "name": "toko/backend",
-    "autoload": {
-        "psr-4": {
-            "Toko\\Backend\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Tornike-max",
-            "email": "84152983+Tornike-max@users.noreply.github.com"
-        }
-    ],
-    "require": {}
+  "name": "toko/backend",
+  "autoload": {
+    "psr-4": {
+      "app\\": "./"
+    }
+  },
+  "authors": [
+    {
+      "name": "Tornike-max",
+      "email": "84152983+Tornike-max@users.noreply.github.com"
+    }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.6"
+  }
 }

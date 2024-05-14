@@ -17,19 +17,19 @@ export const todoItems = [
   {
     brand: "Lexus",
     year: 2017,
-    engine: 5.5,
+    car_engine: 5.5,
     variant: "Car",
   },
   {
     brand: "Boeing",
     year: 2013,
-    engine: 20,
+    car_engine: 20,
     variant: "Plane",
   },
   {
     brand: "Bike",
     year: 2010,
-    engine: 2.5,
+    car_engine: 2.5,
     variant: "BMW",
   },
 ];
