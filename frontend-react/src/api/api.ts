@@ -18,3 +18,24 @@ export const addTodo = async ({ data }: { data: TodoType }) => {
     }
   }
 };
+
+export const getTodos = async () => {
+  try {
+    const response = await axios.get("http://localhost:8080/gettodos");
+    if (!response.data) {
+      throw new Error(`An error occurred: ${response.status}`);
+    }
+
+    const todos = response.data;
+
+    return todos;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(
+        error.response?.data.message || "An axios error occurred"
+      );
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};

@@ -2,9 +2,6 @@
 
 namespace app\models;
 
-
-
-
 class DbModel
 {
     public string $dbname;

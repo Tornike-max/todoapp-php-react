@@ -1,5 +1,5 @@
 export type TodoType = {
-  brand: string;
+  model: string;
   year: number;
   car_engine: number;
   variant: string;

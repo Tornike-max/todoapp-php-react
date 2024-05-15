@@ -8,9 +8,15 @@ class Request
 {
     public string $requestMethod;
     public string $path;
+    public $uri;
+    public string | int $requestedId;
 
-    public function __construct($method)
+    public function __construct($method, $uri)
     {
+        $this->uri = $uri;
+        $parts = explode('=', $this->uri);
+        $this->requestedId = end($parts);
+
         if ($method === 'post') {
             $this->requestMethod = 'post';
         }
@@ -38,13 +44,19 @@ class Request
 
     public function getData()
     {
-        $data = [];
-        $methodData = $this->requestMethod === 'post' ? $_POST : $_GET;
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
 
-        foreach ($methodData as $key => $value) {
-            $data[$key] = $value ?? '';
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception("Error decoding JSON: " . json_last_error_msg());
         }
 
         return $data;
+    }
+
+
+    public function getRequestId()
+    {
+        return (int) $this->requestedId;
     }
 }

@@ -16,7 +16,7 @@ class Application
     {
         self::$app = $this;
         $this->db = new DbModel();
-        $this->request = new Request(strtolower($_SERVER['REQUEST_METHOD']));
+        $this->request = new Request(strtolower($_SERVER['REQUEST_METHOD']), $_SERVER['REQUEST_URI']);
         $this->router = new Router($this->request->getMethod(), $this->request);
     }
 }

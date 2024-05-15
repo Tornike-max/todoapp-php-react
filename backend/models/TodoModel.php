@@ -10,6 +10,7 @@ class TodoModel extends DbModel
         try {
             $pdo = $this->connect();
             $stmt = $pdo->prepare('INSERT INTO todos (variant, model, year, car_engine) VALUES (:variant, :model, :year, :car_engine)');
+
             echo '<pre>';
             var_dump($data);
             echo '</pre>';
@@ -31,7 +32,7 @@ class TodoModel extends DbModel
         }
     }
 
-    public function getTodos()
+    public function getTodosModel()
     {
         try {
             $pdo = $this->connect();
@@ -41,14 +42,33 @@ class TodoModel extends DbModel
             if ($stmt->rowCount() === 0) {
                 throw new \PDOException('There are zero todos in db');
             }
+
             $todos = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
             return $todos;
         } catch (\PDOException $e) {
             echo $e->getCode() . ': ' . $e->getMessage();
         }
     }
 
-    public function getSingleTodo()
+    public function getSingleTodo($id)
     {
+        try {
+            $pdo = $this->connect();
+            $stmt = $pdo->prepare('select * from todos where todoId = :todoId');
+            $stmt->bindValue('todoId', $id);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() === 0) {
+                throw new \PDOException('404 Not Found! Todo not found');
+            }
+
+            $todo = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $todo;
+        } catch (\PDOException $e) {
+            echo $e->getCode() . ': ' . $e->getMessage();
+        }
     }
 }

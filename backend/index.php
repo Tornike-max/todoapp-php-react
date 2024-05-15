@@ -1,9 +1,9 @@
 <?php
 
-// header('Access-Control-Allow-Origin: http://localhost:8080');
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Origin: *');
+// header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, PATCH");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: *");
 
 use app\controllers\Controller;
 use app\core\Application;
@@ -20,9 +20,7 @@ $app->router->post('/register', [Controller::class, 'register']);
 
 $app->router->post('/addtodo', [Controller::class, 'addTodo']);
 $app->router->get('/gettodos', [Controller::class, 'getTodos']);
-$app->router->get('/gettodo', [Controller::class, 'getTodo']);
-
-
+$app->router->get('/gettodo', [Controller::class, 'gettodo']);
 
 
 $app->router->resolve();

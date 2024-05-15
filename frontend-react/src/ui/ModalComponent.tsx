@@ -56,9 +56,9 @@ const ModalComponent = ({
             <ModalBody>
               <Input
                 autoFocus
-                label="Brand"
+                label="Model"
                 variant="bordered"
-                {...register("brand", {
+                {...register("model", {
                   required: "This Field Is Required",
                 })}
               />
