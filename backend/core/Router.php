@@ -2,7 +2,6 @@
 
 namespace app\core;
 
-use app\core\exceptions\RouteNotFoundException;
 
 class Router
 {
@@ -46,9 +45,7 @@ class Router
             echo "404 Not Found: ";
         }
 
-        echo '<pre>';
-        var_dump($callback);
-        echo '</pre>';
+
 
         if (is_array($callback)) {
             $class = new $callback[0]();

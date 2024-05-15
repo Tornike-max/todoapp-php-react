@@ -26,7 +26,6 @@ class DbModel
 
             $pdo = new \PDO("mysql:host=localhost;dbname=$this->dbname;port=3307", $this->username, $this->password);
             $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            echo "Connected to $this->dbname successfully.";
             return $pdo;
         } catch (\PDOException $e) {
             echo $e->getCode() . $e->getMessage();

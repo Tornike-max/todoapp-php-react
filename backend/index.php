@@ -18,12 +18,11 @@ $app->router->get('/register', [Controller::class, 'register']);
 $app->router->post('/login', [Controller::class, 'login']);
 $app->router->post('/register', [Controller::class, 'register']);
 
-
 $app->router->post('/addtodo', [Controller::class, 'addTodo']);
+$app->router->get('/gettodos', [Controller::class, 'getTodos']);
 $app->router->get('/gettodo', [Controller::class, 'getTodo']);
 
 
-echo '<pre>';
-var_dump($app->router->routes);
-echo '</pre>';
+
+
 $app->router->resolve();

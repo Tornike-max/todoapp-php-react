@@ -42,7 +42,7 @@ class Request
         $methodData = $this->requestMethod === 'post' ? $_POST : $_GET;
 
         foreach ($methodData as $key => $value) {
-            $data[$key] = $value;
+            $data[$key] = $value ?? '';
         }
 
         return $data;
