@@ -10,6 +10,7 @@ class Request
     public string $path;
     public $uri;
     public string | int $requestedId;
+    public string $hashedPassword;
 
     public function __construct($method, $uri)
     {
@@ -52,6 +53,18 @@ class Request
         }
 
         return $data;
+    }
+
+    public function getHash()
+    {
+        $pwd = $this->getData()['password'];
+        $this->hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
+
+        if ($this->hashedPassword === false) {
+            throw new \Exception("Error generating password hash");
+        }
+
+        return $this->hashedPassword;
     }
 
 

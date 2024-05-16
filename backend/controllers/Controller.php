@@ -8,20 +8,8 @@ use Exception;
 
 class Controller
 {
-
-    public function login()
-    {
-        echo 'login';
-    }
-
-    public function register()
-    {
-        echo 'register';
-    }
-
     public function addTodo()
     {
-
         $data = Application::$app->request->getData();
 
         foreach ($data as $value) {
@@ -61,10 +49,36 @@ class Controller
             throw new Exception('404 Error Message! Not Found!: There Are No Todos');
         }
 
-        echo '<pre>';
-        var_dump($data);
-        echo '</pre>';
 
-        return $data;
+        header('Content-Type: application/json');
+
+        echo json_encode($data);
+    }
+
+    public function update()
+    {
+        $id = Application::$app->request->getRequestId();
+        $data = Application::$app->request->getData();
+
+        foreach ($data as $value) {
+            if (!isset($value)) {
+                throw new Exception('No Data Provided!');
+                return;
+            }
+        };
+
+        $todo = new TodoModel();
+        $todo->updateTodo($data, $id);
+    }
+
+    public function delete()
+    {
+        $id = Application::$app->request->getRequestId();
+
+        if (!isset($id)) {
+            throw new Exception("Todo with this id:$id, does not exist");
+        }
+        $delete = new TodoModel();
+        $delete->deleteTodo($id);
     }
 }
