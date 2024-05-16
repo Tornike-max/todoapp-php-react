@@ -7,11 +7,11 @@ const MainItems = () => {
   if (isPending) return <p>Loading...</p>;
 
   return (
-    <ul className="w-full flex justify-center items-start flex-col px-4 py-6 gap-4 rounded-2xl">
+    <ul className="w-full flex justify-center items-start flex-col mx-10 py-6 gap-4 rounded-2xl">
       {data.map(
         (item: {
           todoId: number;
-          brand: string;
+          model: string;
           year: number;
           car_engine: number;
           variant: string;

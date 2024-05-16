@@ -11,17 +11,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { TodoType } from "../types/types";
 import { useAddTodo } from "../hooks/useAddTodo";
 
-// brand: "Lexus",
-//     year: 2017,
-//     car_engine: 5.5,
-//     variant: "Car",
-
 const ModalComponent = ({
   isOpen,
   onOpenChange,
+  onClose,
 }: {
   isOpen: boolean;
   onOpenChange: () => void;
+  onClose: () => void;
 }) => {
   const { register, handleSubmit } = useForm<TodoType>();
   const { mutate, isPending } = useAddTodo();
@@ -31,7 +28,9 @@ const ModalComponent = ({
       return;
     }
     mutate({ data });
+    onClose();
   };
+
   return (
     <Modal
       backdrop="opaque"
