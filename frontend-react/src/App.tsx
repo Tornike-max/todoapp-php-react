@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./components/Main";
 import { MainLayout } from "./layout/MainLayout";
-import Edit from "./components/Edit";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 const App = () => {
   return (
@@ -10,7 +11,8 @@ const App = () => {
         <Routes>
           <Route element={<MainLayout />}>
             <Route index element={<Main />} />
-            <Route path="/edit/:editId" element={<Edit />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

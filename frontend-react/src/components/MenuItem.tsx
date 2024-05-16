@@ -1,7 +1,9 @@
 import { Button } from "@nextui-org/button";
-import { useDisclosure } from "@nextui-org/react";
+import { Spinner, useDisclosure } from "@nextui-org/react";
 import { useSearchParams } from "react-router-dom";
 import EditModalComponent from "../ui/EditModalComponent";
+import { useDeleteTodo } from "../hooks/useDeleteTodo";
+import toast from "react-hot-toast";
 
 const MenuItem = ({
   item,
@@ -17,11 +19,21 @@ const MenuItem = ({
   const [searchParams, setSearchParams] = useSearchParams();
   const getId = searchParams.get("todoId") || "";
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
+  const { deleteTodo, isDeleting } = useDeleteTodo();
 
   const handleEdit = (id: number) => {
     searchParams.set("todoId", String(id));
     setSearchParams(searchParams);
     onOpen();
+  };
+
+  const handleDelete = (todoId: number) => {
+    if (!todoId) {
+      toast.error("No Id Provided!");
+      return;
+    }
+
+    deleteTodo(String(todoId));
   };
   return (
     <>
@@ -46,8 +58,13 @@ const MenuItem = ({
           >
             Edit
           </Button>
-          <Button variant="shadow" color="danger" className=" w-full">
-            Delete
+          <Button
+            onClick={() => handleDelete(item.todoId)}
+            variant="shadow"
+            color="danger"
+            className=" w-full"
+          >
+            {isDeleting ? <Spinner size="sm" color="default" /> : "Delete"}
           </Button>
         </div>
       </li>

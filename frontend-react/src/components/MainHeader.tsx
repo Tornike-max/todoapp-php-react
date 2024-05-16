@@ -5,7 +5,7 @@ const MainHeader = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   return (
     <>
-      <div className="w-full flex justify-center items-center bg-slate-200 rounded-2xl">
+      <div className="w-full flex justify-center items-center bg-slate-200 rounded-2xl py-2 px-2">
         <Button onPress={onOpen} variant="bordered" color="primary" size="lg">
           Add A Task
         </Button>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TodoType } from "../types/types";
+import { RegisterType, TodoType } from "../types/types";
 
 export const addTodo = async ({ data }: { data: TodoType }) => {
   try {
@@ -69,6 +69,50 @@ export const updateTodo = async (todoId: string, data: TodoType) => {
       `http://localhost:8080/update?id=${todoId}`,
       data
     );
+
+    if (!response.data) {
+      throw new Error(`An error occurred: ${response.status}`);
+    }
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(
+        error.response?.data.message || "An axios error occurred"
+      );
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};
+
+export const deleteTodoApi = async (todoId: string) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:8080/delete?id=${todoId}`
+    );
+
+    if (!response.data) {
+      throw new Error(`An error occurred: ${response.status}`);
+    }
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(
+        error.response?.data.message || "An axios error occurred"
+      );
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};
+
+//auth
+
+export const registerApi = async (data: RegisterType) => {
+  try {
+    const response = await axios.post(`http://localhost:8080/register`, data);
 
     if (!response.data) {
       throw new Error(`An error occurred: ${response.status}`);
