@@ -67,6 +67,19 @@ class Request
         return $this->hashedPassword;
     }
 
+    public function checkInvalidData()
+    {
+        $data = $this->getData();
+
+        foreach ($data as $value) {
+            if (!isset($value)) {
+                throw new \Exception('No Data Provided!');
+                return;
+            }
+        };
+        return $data;
+    }
+
 
     public function getRequestId()
     {

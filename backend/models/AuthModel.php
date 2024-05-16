@@ -47,6 +47,47 @@ class AuthModel extends DbModel
         }
     }
 
+    public function loginUser($data)
+    {
+        try {
+            $pdo = $this->connect();
+            $stmt = $pdo->prepare('select password from users where email = :email');
+            $stmt->bindValue(':email', $data['email']);
+
+            $stmt->execute();
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if (!$user) {
+                return false;
+            }
+
+            $hashedPwd = $user['password'];
+            $pwd = $data['password'];
+            $email = $data['email'];
+
+            if (password_verify($pwd, $hashedPwd)) {
+                $stmt = $pdo->prepare('select * from users where email = :email and password = :password');
+                $stmt->bindValue(':email', $email);
+                $stmt->bindValue(':password', $hashedPwd);
+                $stmt->execute();
+
+                if ($stmt->rowCount() === 0) {
+                    throw new \PDOException('No User Found');
+                }
+
+                $user = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+                echo '<pre>';
+                var_dump($user);
+                echo '</pre>';
+
+                return $user;
+            }
+        } catch (\Exception $e) {
+            echo $e->getCode() . ': ' . $e->getMessage();
+        }
+    }
+
     public function getUsers()
     {
         try {
