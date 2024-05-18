@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useRegister } from "../hooks/useRegister";
 
 const RegisterPage = () => {
-  const { register, handleSubmit, getValues } = useForm<RegisterType>();
+  const { register, handleSubmit, getValues, reset } = useForm<RegisterType>();
   const { registerUser, isRegistering } = useRegister();
 
   const onSubmit: SubmitHandler<RegisterType> = (data) => {
@@ -13,7 +13,9 @@ const RegisterPage = () => {
       return;
     }
     registerUser(data);
+    reset();
   };
+
   return (
     <div className="w-full flex justify-center items-center">
       <div className="max-w-[800px] w-full m-auto flex justify-center items-center py-10">

@@ -2,6 +2,10 @@
 
 namespace app\controllers;
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+
 use app\core\Application;
 use app\models\TodoModel;
 use Exception;
@@ -46,9 +50,8 @@ class Controller
 
         if ($data === 0) {
             http_response_code(404);
-            throw new Exception('404 Error Message! Not Found!: There Are No Todos');
+            throw new Exception('404 Error Message! Not Found!: There Are No Todo');
         }
-
 
         header('Content-Type: application/json');
 

@@ -1,16 +1,18 @@
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginType } from "../types/types";
 import { Link } from "react-router-dom";
+import { useLogin } from "../hooks/useLogin";
 
 const LoginPage = () => {
   const { register, handleSubmit } = useForm<LoginType>();
+  const { loginUser, isLogingIn } = useLogin();
 
   const onSubmit: SubmitHandler<LoginType> = (data) => {
     if (!data) {
       return;
     }
-    console.log(data);
+    loginUser(data);
   };
   return (
     <div className="w-full flex justify-center items-center">
@@ -41,7 +43,7 @@ const LoginPage = () => {
           />
           <div className="w-full flex justify-end items-center px-4 gap-2">
             <Button type="submit" variant="shadow" color="primary">
-              Login
+              {isLogingIn ? <Spinner size="sm" color="default" /> : "Login"}
             </Button>
           </div>
           <div className="w-full flex justify-end items-center px-4 gap-2">

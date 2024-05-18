@@ -3,6 +3,9 @@
 
 namespace app\core;
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 
 class Request
 {
@@ -84,5 +87,12 @@ class Request
     public function getRequestId()
     {
         return (int) $this->requestedId;
+    }
+
+
+    public function checkAuth()
+    {
+        $session = Application::$app->session->getSession('user') ?? [];
+        var_dump($session);
     }
 }

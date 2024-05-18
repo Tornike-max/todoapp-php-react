@@ -44,6 +44,7 @@ class TodoModel extends DbModel
             }
 
             $todos = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
             return $todos;
         } catch (\PDOException $e) {
             echo $e->getCode() . ': ' . $e->getMessage();
