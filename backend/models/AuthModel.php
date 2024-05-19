@@ -9,6 +9,14 @@ use Exception;
 
 class AuthModel extends DbModel
 {
+    private $data;
+
+    public function __construct()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
     public function registerUser($data)
     {
         try {
@@ -52,8 +60,12 @@ class AuthModel extends DbModel
     public function loginUser($data)
     {
         try {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+
             $pdo = $this->connect();
-            $stmt = $pdo->prepare('select password from users where email = :email');
+            $stmt = $pdo->prepare('select * from users where email = :email');
             $stmt->bindValue(':email', $data['email']);
 
             if ($stmt->execute()) {
@@ -70,27 +82,22 @@ class AuthModel extends DbModel
 
             $hashedPwd = $user['password'];
             $pwd = $data['password'];
-            $email = $data['email'];
-            $_SESSION['id'] = $data['users_id'];
 
-
-            if (!password_verify($pwd, $hashedPwd)) {
+            if (password_verify($pwd, $hashedPwd)) {
+                Application::$app->session->set('id', $user['users_id']);
+                Application::$app->session->set('email', $user['email']);
+                Application::$app->session->set('firstname', $user['firstname']);
+                Application::$app->session->set('lastname', $user['lastname']);
+                $stmt = $pdo->prepare('select users_id,firstname,lastname,email from users where password = :pwd');
+                $stmt->bindValue(':pwd', $hashedPwd);
+                $stmt->execute();
+                $responseData = $stmt->fetch(\PDO::FETCH_ASSOC);
+                header('Content-Type: application/json');
+                echo json_encode(['message' => 'user login successfully', 'response' => $responseData]);
+            } else {
                 http_response_code(401);
                 echo json_encode(['message' => 'Invalid credentials']);
                 return;
-            }
-
-            $stmt = $pdo->prepare('select users_id,email,firstname,lastname from users where email = :email');
-            $stmt->bindValue(':email', $email);
-
-            if ($stmt->execute()) {
-                $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-                $_SESSION['id'] = $result['users_id'];
-
-                header('Content-Type: application/json');
-                echo json_encode(['message' => 'User successfully logged in']);
-            } else {
-                $stmt = null;
             }
         } catch (\Exception $e) {
             http_response_code(500);
@@ -98,25 +105,30 @@ class AuthModel extends DbModel
         }
     }
 
-    public function getAuthUser()
+    public function getAuthUser($userId)
     {
         try {
-            $id = $_SESSION['id'] || 8;
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+
             $pdo = $this->connect();
 
-            $stmt = $pdo->prepare('select users_id,email,firstname,lastname from users where users_id = :id');
+            if ($userId) {
+                $stmt = $pdo->prepare('select users_id,email,firstname,lastname from users where users_id = :id');
+                $stmt->bindValue(':id', $userId);
 
-            $stmt->bindValue(':id', $id);
+                $stmt->execute();
+                $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-            $stmt->execute();
-            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+                if (empty($user)) {
+                    http_response_code(401);
+                    throw new Exception('Unauthorized!');
+                }
 
-
-            if (empty($user)) {
-                http_response_code(401);
-                throw new Exception('Unauthorized!');
+                return $user;
             }
-            return $user;
+            return null;
         } catch (\Exception $e) {
             echo $e->getCode() . ': ' . $e->getMessage();
         }

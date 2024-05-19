@@ -8,7 +8,8 @@ export const useLogin = () => {
 
   const { mutate: loginUser, isPending: isLogingIn } = useMutation({
     mutationFn: (data: LoginType) => loginUserApi(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
       toast.success("User Registered Successfully");
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },

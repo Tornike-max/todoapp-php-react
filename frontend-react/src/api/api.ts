@@ -132,6 +132,7 @@ export const registerApi = async (data: RegisterType) => {
 
 export const loginUserApi = async (data: LoginType) => {
   try {
+    console.log(data);
     const response = await axios.post(`http://localhost:8080/login`, data);
 
     if (!response.data) {
@@ -150,9 +151,11 @@ export const loginUserApi = async (data: LoginType) => {
   }
 };
 
-export const getAuthUser = async () => {
+export const getAuthUser = async (userId: string) => {
   try {
-    const response = await axios.get(`http://localhost:8080/getuser`);
+    const response = await axios.get(
+      `http://localhost:8080/getuser?id=${userId}`
+    );
 
     if (!response.data) {
       throw new Error(`An error occurred: ${response.status}`);

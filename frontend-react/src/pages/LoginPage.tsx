@@ -2,11 +2,11 @@ import { Button, Input, Spinner } from "@nextui-org/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginType } from "../types/types";
 import { Link } from "react-router-dom";
-import { useLogin } from "../hooks/useLogin";
+import { useAuth } from "../context/useAuth";
 
 const LoginPage = () => {
   const { register, handleSubmit } = useForm<LoginType>();
-  const { loginUser, isLogingIn } = useLogin();
+  const { loginUser, isLogingIn } = useAuth();
 
   const onSubmit: SubmitHandler<LoginType> = (data) => {
     if (!data) {

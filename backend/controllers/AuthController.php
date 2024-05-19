@@ -15,27 +15,35 @@ class AuthController
     {
         $data = Application::$app->request->checkInvalidData();
         $auth = new AuthModel();
-        $data = $auth->loginUser($data);
+        $user = $auth->loginUser($data);
+        if ($user) {
+            Application::$app->session->set('user', $user);
+        }
     }
 
     public function register()
     {
         $data = Application::$app->request->checkInvalidData();
         $auth = new AuthModel();
-        $auth->registerUser($data);
+        $userResponse = $auth->registerUser($data);
+        header('Content-Type: application/json');
+        return json_encode($userResponse);
     }
 
     public function getUser()
     {
         try {
 
+            $userId = Application::$app->request->getRequestId();
+            if (!$userId) {
+                http_response_code(401);
+                echo json_encode(['message' => 'User not authenticated']);
+                return;
+            }
             $user = new AuthModel();
-            $userData = $user->getAuthUser();
-
-            var_dump($userData);
-
+            $data = $user->getAuthUser($userId);
             header('Content-Type: application/json');
-            echo json_encode($userData);
+            echo json_encode($data);
         } catch (\Exception $e) {
             http_response_code(500);
             echo json_encode(['message' => $e->getMessage()]);
