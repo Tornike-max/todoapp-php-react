@@ -54,9 +54,4 @@ class Router
             }
         }
     }
-
-    public function test()
-    {
-        echo 'gaumarjos yleco';
-    }
 }
